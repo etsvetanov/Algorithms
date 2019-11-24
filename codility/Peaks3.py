@@ -14,8 +14,9 @@ def solution(A: []) -> int:
     peaks_so_far[-1] = peaks_so_far[-2]
     peaks_so_far = [0] + peaks_so_far
 
-    for block_size in range(3, N + 1):
 
+
+    for block_size in range(3, N + 1):
         if N % block_size == 0:
             # iterate over last index in block and check if:
             if all(peaks_so_far[block_end] >= block_end // block_size  # there are at least X peaks if X is current block
@@ -25,6 +26,7 @@ def solution(A: []) -> int:
                 return N // block_size
 
     return 0
+
 
 
 test = [1, 2, 3, 4, 3, 4, 1, 2, 3, 4, 6, 2]
