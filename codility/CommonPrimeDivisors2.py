@@ -3,6 +3,10 @@ def gcd(a, b):
         return a
     return gcd(b, a % b)
 
+# gdc(x, y) will contain the common prime factors of x and y
+# when we start dividing x and y to the greatest common divisor we will reach either 1 or a primer factor that is
+# not in gdc(x, y)
+
 
 def solution(A, B):
     count = 0
