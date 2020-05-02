@@ -5,7 +5,10 @@ def is_binary_search_tree(root):
     while len(visited):
         current, min_v, max_v = visited.pop()
 
-        if min_v < current.left.value < current.value or current.value < current.right.value < max_v:
+        if current.left and min_v < current.left.value < current.value:
+           return False
+
+        if current.right and current.value < current.right.value < max_v:
             return False
 
         visited.append((current.left, min(current.left.value, min_v), current.value))
