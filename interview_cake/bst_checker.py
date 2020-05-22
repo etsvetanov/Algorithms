@@ -35,31 +35,28 @@ A.right.insert_right(50)
 
 
 # THIS IS WRONG
-def check_bst(node: BinaryTreeNode):
-    print('node.value:', node.value)
-    if node.left:
-        if node.right:
-            # both present
-            if node.left.value > node.value or node.right.value < node.value:
+def is_binary_search_tree(root):
+    # Determine if the tree is a valid binary search tree
+
+    visited = [(root, None, None)]  # (node, min, max)
+
+    while visited:
+        current, minn, maxx = visited.pop()
+        value, left, right = current.value, current.left, current.right
+
+        if current.right:
+            if minn and right.value < minn or maxx and right.value > maxx:
                 return False
 
-            return check_bst(node.left) and check_bst(node.right)
-        else:
-            # only left present
-            if node.left.value > node.value:
+            visited.append((right, value, maxx))
+
+        if current.left:
+            if minn and left.value < minn or maxx and left.value > maxx:
                 return False
 
-            return check_bst(node.left)
-    elif node.right:
-        # only right is present
-        if node.right.value < node.value:
-            return False
-
-        return check_bst(node.right)
+            visited.append((left, minn, value))
 
     return True
-
-
 
 
 print(check_bst(A))
