@@ -1,5 +1,4 @@
 from queue import LifoQueue
-from typing import List
 
 
 class Solution:
@@ -14,13 +13,12 @@ class Solution:
             for j in range(num_cols):
                 n = grid[i][j]
 
-                if n == 0:
+                if n == '0':
                     continue
 
-                grid[i][j] = 0
+                grid[i][j] = '0'
 
                 count += 1
-                print('adding island!')
 
                 stack = LifoQueue()
                 stack.put((i, j))
@@ -41,20 +39,13 @@ class Solution:
                         neighbors
                     ))
 
-                    print('neighbors for {0}:'.format((ni, nj)), neighbors)
-
                     for ni, nj in neighbors:
                         n_val = grid[ni][nj]
-                        print('grid[{0}][{1}]:'.format(ni, nj), n_val)
-                        if n_val == 1:
-                            print('adding neighbor to stack')
-                            grid[ni][nj] == 0  # mark as visited
+                        if n_val == '1':
+                            grid[ni][nj] == '0'  # mark as visited
                             stack.put((ni, nj))
 
         return count
 
 
-input = [["1", "1", "1", "1", "0"], ["1", "1", "0", "1", "0"], ["1", "1", "0", "0", "0"], ["0", "0", "0", "0", "0"]]
-solution = Solution()
-result = solution.numIslands(input)
-print('number of islands', result)
+
