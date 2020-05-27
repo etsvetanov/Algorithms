@@ -31,3 +31,8 @@ class Solution(object):
         node.random = self.copyRandomList(head.random)
 
         return node
+
+
+class Node:
+    def __init__(self, x: int, nxt = None, random = None):
+        pass
