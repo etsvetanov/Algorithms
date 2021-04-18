@@ -47,53 +47,60 @@ class UnionFind {
   }
 }
 
+class UnionControl {
+  constructor(uf, network ) {
+    this.uf = uf;
+    this.network = network;
+
+
+    this.redraw();
+  }
+
+  getNodesSet() {
+    const nodes = this.uf._arr.map((x, i) => ({ id: i, label: `Node ${i}`}));
+
+    return new vis.DataSet(nodes);
+  }
+
+  getEdgesSet() {
+    const edges = this.uf._arr.map((x, i) => ({ from: i, to: x }));
+
+    return new vis.DataSet(edges);
+  }
+
+  redraw() {
+    const data = {
+      nodes: this.getNodesSet(),
+      edges: this.getEdgesSet()
+    }
+
+    window.data = data;
+
+    this.network.setData(data);
+  }
+
+  union(a, b) {
+    this.uf.union(a, b);
+
+    this.redraw();
+  }
+
+  find(a, b) {
+    return this.uf.find(a, b);
+  }
+}
+
 const uf = new UnionFind(10);
 
 
-
-
-const getNodesFromArr = arr => {
-  const data = arr.map(x => ({id: x, label: `Node ${x}`}));
-
-  return new vis.DataSet(data);
-}
-
-
-const union_set = getInitialArr(10);
-
-var nodes = getNodesFromArr(union_set);
-
-
-// var nodes = new vis.DataSet([
-//   {id: 1, label: "Node 1"},
-//   {id: 2, label: "Node 2"},
-//   {id: 3, label: "Node 3"},
-//   {id: 4, label: "Node 4"},
-//   {id: 5, label: "Node 5", color: "#f1ad69"},
-// ]);
-
-window.nodes = nodes;
-
-// create an array with edges
-// var edges = new vis.DataSet([
-//   {from: 1, to: 3},
-//   {from: 1, to: 2},
-//   {from: 2, to: 4},
-//   {from: 2, to: 5},
-//   {from: 3, to: 3},
-// ]);
-
-var edges = new vis.DataSet();
-
-window.edges = edges;
-
-// create a network
 var container = document.getElementById("mynetwork");
-var data = {
-  nodes: nodes,
-  edges: edges,
-};
-window.data = data;
+
 var options = {};
+var data = {};
+
 var network = new vis.Network(container, data, options);
+var ctrl = new UnionControl(uf, network);
+
+
+window.ctrl = ctrl;
 window.netork = network;
