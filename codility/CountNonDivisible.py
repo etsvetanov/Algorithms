@@ -1,36 +1,42 @@
 from math import sqrt
 
+from collections import Counter
+from math import sqrt
 
-def find_divisors(n):
-    if n == 0:
-        return None
 
-    divisors = {1, n}
+def get_divisors(n: int):
+    divisors = set()
 
-    divisor = 2
-
-    while divisor * divisor <= n:
-        if n % divisor == 0:
-            divisors.add(divisor)
-            divisors.add(n // divisor)
-
-        divisor += 1
+    # go from 1 to sqrt(n) checking for a divisor and its reciprocal
+    for i in range(1, int(sqrt(n)) + 1):
+        if n % i == 0:
+            divisors.add(i)
+            divisors.add(n // i)
 
     return divisors
 
 
 def solution(A):
-    max_n = max(A)
+    # write your code in Python 3.6
     N = len(A)
+    count_by_number = Counter(A)
 
-    count = {}
+    non_divisors_count = [N] * N
 
-    for n in A:
-        count[n] = count.get(n, 0) + 1
+    divisors_by_number = {}
 
-    divisors = {n: find_divisors(n) for n in count.keys()}
+    for i, n in enumerate(A):
+        divisors = None
+        if n in divisors_by_number:
+            divisors = divisors_by_number[n]
+        else:
+            divisors = divisors_by_number[n] = get_divisors(n)
 
-    return [N - sum(count.get(divisor, 0) for divisor in divisors[n]) for n in A]
+        for d in divisors:
+            if d in count_by_number:
+                non_divisors_count[i] -= count_by_number[d]
+
+    return non_divisors_count
 
 
 print(solution([2]))

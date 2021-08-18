@@ -1,44 +1,51 @@
-# # you can write to stdout for debugging purposes, e.g.
-# # print("this is a debug message")
+# Observations:
+# 1. The 0-th idx is always excluded, i.e. A[0] cannot be a part of a sum, i.e. if X=0 then sum can only begin at X+1,
+#       but if X=1 then sum can only begin at X+2... thus 0-th idx can never be part of a sum
+# 1.1  Following the same logic the last element cannot be a part of a sum
+#       Below is an illustration of why first and last cannot be (ever) a part of the slices
+#       [ X <--- left-slice ---> Y <--- right-slice ---> Z ]
+#       [ 0 X <--- left-slice ---> Y <--- right-slice ---> Z -1]
 #
-# def prefixes(A):
-#     pref = [0] * len(A) + 1
-#
-#     for i, n in enumerate(A, 1):
-#         pref[i] = pref[i - 1] + n
-#
-#
-# def solution(A):
-#     # write your code in Python 3.6
-#
-#     for x in len(A):
-#         for y in
+# 2. We don't really care where (exactly) the slices begin and end so we can look at the problem, as following:
+#       - we have a number Y satisfying 1 <= Y <= N-2 (following the requirements 0 <= X < Y < Z < N,
+#           i.e. only X can be the 0-th and only Z can be the last one, Y has to be in between
+#       - we want to know what is the maximum sum ending at the index before Y (i.e. Y-1) and what is the maximum sum
+#           starting after Y (i.e. Y+1)
+# 3. even though some slices sum may be negative (e.g. we only have negative numbers in the whole array), we can always
+#       count a 0-length slice with sum of 0 thus we the max slice can never be negative (e.g. X=0, Y=1, Z=2 and even
+#       if we have only negative numbers the max slice sum will still be 0
 
+#                  Y      Z
+# [3, 2, 6, -1, 4, 5, -1, 2]
 
 def solution(A):
-    A_len = len(A)    # The length of array A
-    # Get the sum of maximum subarray, which ends this position
-    # Method: http://en.wikipedia.org/wiki/Maximum_subarray_problem
-    max_ending_here = [0] * A_len
-    max_ending_here_temp = 0
-    for index in range(1, A_len-2):
-        max_ending_here_temp = max(0, A[index]+max_ending_here_temp)
-        max_ending_here[index] = max_ending_here_temp
-    # Get the sum of maximum subarray, which begins this position
-    # The same method. But we travel from the tail to the head
-    max_beginning_here = [0] * A_len
-    max_beginning_here_temp = 0
-    for index in range(A_len-2, 1, -1):
-        max_beginning_here_temp = max(0, A[index]+max_beginning_here_temp)
-        max_beginning_here[index] = max_beginning_here_temp
-    # Connect two subarray for a double_slice. If the first subarray
-    # ends at position i, the second subarray starts at position i+2.
-    # Then we compare each double slice to get the one with the
-    # greatest sum.
-    max_double_slice = 0
-    for index in range(0, A_len-2):
-        max_double_slice = max(max_double_slice,
-                 max_ending_here[index] + max_beginning_here[index+2] )
-    return max_double_slice
+    # write your code in Python 3.6
+    max_ending = 0
+    max_ending_at = [0] * len(A)
+
+    # we leave A[0] = 0 and start from A[1] so A[0] is never counted for the slice sum
+    # not crucial, but we also don't care about the last two elements because they will never be needed for the
+    # left-slice, they may only be occupied by Y and Z:
+    # [ ... X <--- left-slice ---> Y Z]     - here the right-slice is a 0-length slice between Y Z (last 2 elements)
+    for i in range(1, len(A) - 2):
+        max_ending = max(0, max_ending + A[i])
+        max_ending_at[i] = max_ending
+
+    max_starting = 0
+    max_starting_at = [0] * len(A)
+
+    # same as above,
+    # we leave the last one A[-1] = 0 and start from A[-2] so that the last one can never be counted for the slice sum
+    # and (not crucial) but we don't care about A[0] and A[1] so we calculate A[2] and stop
+    for i in range(len(A) - 2, 1, -1):  # we leave
+        max_starting = max(0, max_starting + A[i])
+        max_starting_at[i] = max_starting
+
+    max_slice = 0
+    for i in range(1, len(A) - 1):
+        max_slice = max(max_slice, max_ending_at[i - 1] + max_starting_at[i + 1])
+
+    return max_slice
+
 
 print(solution([3, 2, 6, -1, 4, 5, -1, 2]))

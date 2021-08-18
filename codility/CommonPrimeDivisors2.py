@@ -19,7 +19,7 @@ def solution(A, B):
         while True:
             d = gcd(a, g)
             print('a={a:<15}  d = gcd({a}, {g}) = {d}'.format(a=a, g=g, d=d))
-            if 1 == d:
+            if 1 == d:  # gcd(a, b) is 1, i.e. no common dividers except 1
                 break
 
             assert(a/d == a//d)

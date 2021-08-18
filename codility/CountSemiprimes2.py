@@ -48,24 +48,49 @@ def solution(N, P, Q):
 
 
 print(solution(26, [1, 4, 16], [26, 10, 20]))
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#
+# # you can write to stdout for debugging purposes, e.g.
+# # print("this is a debug message")
+# from math import sqrt
+#
+#
+# def get_primes_up_to(N: int):
+#     is_prime = [True] * (N + 1)
+#     is_prime[0] = is_prime[1] = False
+#
+#     for i in range(2, int(sqrt(N)) + 1):
+#         # if i is marked as not prime then we know it's multiples are not prime either
+#         # and already been marked as sucj
+#         if is_prime[i]:
+#             for k in range(i ** 2, N + 1, i):
+#                 is_prime[k] = False
+#
+#     return [i for i, v in enumerate(is_prime) if v]
+#
+#
+# def solution(N, P, Q):
+#     # write your code in Python 3.6
+#     primes_up_to_N = get_primes_up_to(N // 2)
+#     semi_primes = set()
+#
+#     for i, p1 in enumerate(primes_up_to_N):
+#         for j in range(i + 1, len(primes_up_to_N)):
+#             p2 = primes_up_to_N[j]
+#             semi_prime = p1 * p2
+#             if semi_prime <= N:
+#                 semi_primes.add(semi_prime)
+#
+#     semi_primes_count_up_to = [0] * (N + 1)
+#
+#     for i in range(1, N + 1):
+#         is_semi_prime = int(i in semi_primes)
+#         print(f'setting: [{i}] to {semi_primes_count_up_to[i - 1] + is_semi_prime}')
+#         semi_primes_count_up_to[i] = semi_primes_count_up_to[i - 1] + is_semi_prime
+#
+#     print(f'N: {N} semi_primes: {semi_primes}, semi_primes_count_up_to {semi_primes_count_up_to}')
+#
+#     return [semi_primes_count_up_to[q] - semi_primes_count_up_to[p] for p, q in zip(P, Q)]
+#
 
 
 
